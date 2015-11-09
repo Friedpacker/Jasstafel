@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+
+<head>
+	<title>Jasstafel</title>
+	<meta name='description' content='Ein einfach zu bedienender und kostenloser Jasszähler. Zähle deine Jasserfolge ohne lästiges Kopfrechnen! - A free and easy to use counter for the Austrian cardgame "Jassen". No registration required and you can immediately start counting!'>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type='text/javascript'></script>
+	<link href='https://fonts.googleapis.com/css?family=Parisienne' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
+	<link rel='shortcut icon' href="icon.jpg">
+	<link href='http://fonts.googleapis.com/css?family=Bilbo+Swash+Caps' rel='stylesheet' type='text/css'>
+<style>
+* {
+	font: 12px 'Raleway', sans-serif;
+	box-sizing: border-box;
+	font-weight: 200;
+}
+h1{
+	text-align: center;
+	margin-top: 30px;
+	margin-bottom: -90px;
+	font: 50px 'Parisienne';
+}
+h2{
+	font: bold 20px 'Raleway';
+	font-weight: 400;
+	
+}
+h3{
+	font-family: 'Raleway';
+	font-size: 14px;
+	margin-top: 0px;
+	margin-bottom: 0;
+}
+	.weisenHeader {
+		margin-top: -20px;
+	}
+h4 {
+	margin-top: -7px;
+	margin-bottom: 20px;
+	font: 35px 'Parisienne';
+}
+body {
+	background: radial-gradient(circle, #fff 20%, #aaa);
+	background-size: cover;
+}
+a {
+	font-size: 12px;
+	color: rgba(75,75,75,1);
+}
+.main {
+	margin: 100px auto;
+	max-width:500px;
+	text-align: center;
+	border: 15px solid rgba(0, 0, 0, 1);
+	border-radius: 7px;
+	padding: 15px 5px 5px 5px;
+	transition: all 0.5s ease;
+	-webkit-transition: all 0.5s ease;
+	background: linear-gradient(rgba(190,190,190,1),rgba(210,210,210,1));
+	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.4);
+	height: auto;
+}
+#mainDiv {
+	visibility: hidden;
+}
+#log {
+	margin-top:-65px;
+	text-align: left;
+	padding: 15px;
+}
+.team{
+	text-align: center;
+	margin: 10px;
+	width: 221px;
+	margin: 0 auto;
+	transition: all 0.5s ease;
+	border-radius: 10px;
+	margin-top: -10px;
+}
+p {
+	color: black;
+}
+.buttonSubmit{
+	background-color: rgba(230,230,230,1);
+	border-radius: 2px;
+	padding: 2px 5px -20px 5px;
+	top: 0px;
+	position: relative;
+	transition: all 0.2s ease;
+	height: 20px;
+	width: 180px;
+	margin: 0 auto;
+	margin-top: -10px;
+	border: 1px solid #617061;
+}
+.nameSubmit{
+	background-color: rgba(230,230,230,1);
+	border-radius: 2px;
+	padding: 2px 5px 2px 5px;
+	top: 0px;
+	position: relative;
+	transition: all 0.2s ease;
+	height: 20px;
+	width: 190px;
+	margin: 0 auto;
+	margin-top: -10px;
+	border: 1px solid #617061;
+}
+.pointsInput {
+	border-radius: 2px;
+	padding: 2px;
+	background-color: rgba(75,75,75,1);
+	border: 1px solid rgba(230,230,230,1);
+	box-shadow: inset 1px 1px rgba(125,125,125,1);
+	height:20px;
+	width: 178px;
+	color: white;
+	margin-top: -75px;
+}
+.display {
+	color: black;
+	margin-bottom: 10px;
+	font-size: 90px;
+	margin-top: -20px;
+	font-weight: 400;
+}
+.Error {
+	visibility:hidden;
+	transition: all 0.2s ease;
+	margin: 0 auto;
+	margin-bottom: -40px;
+}
+.ErrorNumber {
+	visibility:hidden;
+	transition: all 0.2s ease;
+	margin-top: -30px;
+}
+#Error1 {
+	font-size: 11px;
+}
+#Error2 {
+	font-size: 11px;
+}
+input {
+	text-align: center;
+}
+.button {
+	display: inline-block;
+	width: auto;
+	background-color: rgba(175,175,175,1);
+	border-radius: 2px;
+	padding: 2px 5px 2px 5px;
+	margin-top: 5px;
+	margin-left: 2px;
+	margin-right: 2px;
+	margin-bottom: 5px;
+	position: relative;
+	height: 20px;
+	border: 1px solid black;
+	top: 0px;
+	box-shadow: 2px 2px;
+}
+.weisen {
+	display: inline-block;
+	width: 45px;
+	background-color: rgba(230,230,230,1);
+	border-radius: 2px;
+	padding: 2px 5px 18px 5px;
+	top: 0px;
+	position: relative;
+	transition: all 0.2s ease;
+	height: 20px;
+	border: 1px solid black;
+}
+.button:active{
+	box-shadow: 0px 0px;
+	top: 2px;
+}
+table {
+	margin: 0 auto;
+}
+.developer {
+	font-size: 12px;
+	text-align: right;
+	vertical-align: middle;
+	z-index: 1;
+}
+img{
+	margin: 0;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.85);
+    padding-top: 30%;
+    z-index: 10000;
+    color: white;
+    display: none;
+    transition: all 0.4s ease;
+    text-align: center;
+    font-size: 50px;
+    font-weight: 400;
+}
+.z {
+	font-family: 'Bilbo Swash Caps';
+	font-size: 180px;
+	text-align: center;
+	font-weight: 1px;
+	color: rgba(50,50,50,1);
+	padding-bottom: -50px;
+}
+.zTwenty {
+	z-index: +1;
+	position: absolute;
+	font-family: 'Bilbo Swash Caps';
+	font-size: 50px; 
+	margin-top: -98px;
+	margin-left: 70px; 
+	-moz-transform: rotate(-20deg); -webkit-transform: rotate(-20deg); transform: rotate(-20deg);
+	transition: all 0.5s ease; -webkit-transition: all 0.5s ease;
+}
+	.zTwenty:nth-of-type(2){
+		margin-left: 75px; 
+	}
+	.zTwenty:nth-of-type(3){
+		margin-left: 80px; 
+	}
+	.zTwenty:nth-of-type(4){
+		margin-left: 85px; 
+	}
+	.zTwenty:nth-of-type(5){
+		margin-left: 72px; 
+		-moz-transform: rotate(30deg); -webkit-transform: rotate(30deg); transform: rotate(30deg);
+	}
+	.zTwenty:nth-of-type(6){
+		margin-left: 93px; 
+	}
+	.zTwenty:nth-of-type(7){
+		margin-left: 98px; 
+	}
+	.zTwenty:nth-of-type(8){
+		margin-left: 103px; 
+	}
+	.zTwenty:nth-of-type(9){
+		margin-left: 108px; 
+	}
+	.zTwenty:nth-of-type(10){
+		margin-left: 100px; 
+		-moz-transform: rotate(30deg); -webkit-transform: rotate(30deg); transform: rotate(30deg);
+	}
+	.zTwenty:nth-of-type(11){
+		margin-left: 116px; 
+	}
+	.zTwenty:nth-of-type(12){
+		margin-left: 121px; 
+	}
+	.zTwenty:nth-of-type(13){
+		margin-left: 126px; 
+	}
+	.zTwenty:nth-of-type(14){
+		margin-left: 131px; 
+	}
+	.zTwenty:nth-of-type(15){
+		margin-left: 123px; 
+		-moz-transform: rotate(30deg); -webkit-transform: rotate(30deg); transform: rotate(30deg);
+	}
+.zFifty {
+	z-index: +1;
+	position: absolute;
+	font-family: 'Bilbo Swash Caps';
+	font-size: 50px; 
+	margin-top: -140px;
+	margin-left: 80px; 
+	-moz-transform: rotate(-20deg); -webkit-transform: rotate(-20deg); transform: rotate(-20deg);
+	transition: all 0.5s ease; -webkit-transition: all 0.5s ease;
+}
+	.zFifty:nth-of-type(2){
+		margin-left: 80px;
+		margin-top: -148px;
+		-moz-transform: rotate(115deg); -webkit-transform: rotate(115deg); transform: rotate(115deg);
+	}
+	.zFifty:nth-of-type(3){
+		margin-left: 100px;
+		margin-top: -155px;
+	}
+	.zFifty:nth-of-type(4){
+		margin-left: 100px;
+		margin-top: -163px;
+		-moz-transform: rotate(115deg); -webkit-transform: rotate(115deg); transform: rotate(115deg);
+	}
+	.zFifty:nth-of-type(5){
+		margin-left: 120px;
+		margin-top: -170px;
+	}
+	.zFifty:nth-of-type(6){
+		margin-left: 120px;
+		margin-top: -178px;
+		-moz-transform: rotate(115deg); -webkit-transform: rotate(115deg); transform: rotate(115deg);
+	}
+	.zFifty:nth-of-type(7){
+		margin-left: 140px;
+		margin-top: -185px;
+	}
+	.zFifty:nth-of-type(8){
+		margin-left: 140px;
+		margin-top: -193px;
+		-moz-transform: rotate(115deg); -webkit-transform: rotate(115deg); transform: rotate(115deg);
+	}
+.zHundred {
+	z-index: +1;
+	position: absolute;
+	font-family: 'Bilbo Swash Caps';
+	font-size: 50px; 
+	margin-top: -215px;
+	margin-left: 90px; 
+	-moz-transform: rotate(-20deg); -webkit-transform: rotate(-20deg); transform: rotate(-20deg);
+	transition: all 0.5s ease; -webkit-transition: all 0.5s ease;
+}
+	.zHundred:nth-of-type(2){
+		margin-left: 95px;
+	}
+	.zHundred:nth-of-type(3){
+		margin-left: 100px;
+	}
+	.zHundred:nth-of-type(4){
+		margin-left: 105px;
+	}
+	.zHundred:nth-of-type(5){
+		margin-left: 97px;
+		-moz-transform: rotate(30deg); -webkit-transform: rotate(30deg); transform: rotate(30deg);
+	}
+	.zHundred:nth-of-type(6){
+		margin-left: 120px;
+	}
+	.zHundred:nth-of-type(7){
+		margin-left: 125px;
+	}
+	.zHundred:nth-of-type(8){
+		margin-left: 130px;
+	}
+	.zHundred:nth-of-type(9){
+		margin-left: 135px;
+	}
+	.zHundred:nth-of-type(10){
+		margin-left: 122px;
+		-moz-transform: rotate(30deg); -webkit-transform: rotate(30deg); transform: rotate(30deg);
+	}
+.rest{
+	position: absolute;
+	margin-left: 150px;
+	margin-top: -50px;
+}
+.line{
+	height: 20px;
+	border-bottom: 1px solid black;
+	width: 90%;
+	margin: 0 auto;
+	margin-bottom: 5px
+}
+@media (max-width: 700px) {
+*{
+	font-size: 12px;
+}
+.button {
+	display:inline-table;
+	width:40px;
+	height:30px;
+	font-size: 10px;
+}
+.pointsInput {
+	width:90px;
+}
+.buttonSubmit {
+	width:90px;
+}
+h1 {
+	margin-top:10px;
+}
+h2 {
+	font-size: 14px;
+}
+h3 {
+	font-size: 12px;
+}
+.team {
+	width:100px;
+}
+.main {
+	max-width: 300px;
+	border-width: 7px;
+}
+.z {
+	display: none;
+}
+.zTwenty{
+	display: none;
+}
+.zFifty{
+	display: none;
+}
+.zHundred {
+	display: none;
+}
+.weisen {
+	margin: 5px;
+}
+.rest {
+	display: none;
+}
+.display{
+	margin-bottom: 0px;
+}
+}
+</style>
+
+</head>
+<body>
+<div class='overlay' id="overlayTeam1"></div>
+<div class='overlay' id="overlayTeam2"></div>
+<h1>Jasstafel</h1>
+<div class='main' id='nameSubmitDiv'>
+<h2>What shall we call you guys?</h2>
+<table cellpadding='3'><tr>
+	<td>
+		<h3> Team 1</h3><p>
+		<input class="pointsInput" placeholder='Enter Name!' id="teamName1"></input>
+	</td><td>
+		<h3> Team 2</h3><p>
+		<input class="pointsInput" placeholder='Enter Name!' id="teamName2"></input>
+</tr></table>
+<div class="nameSubmit" id='nameSubmit' onclick='registerNames()'> Enter and start counting!</div><p>
+<span class="Error" id="ErrorName">Please enter short teamnames that are not all caps.</span>
+</div>
+<div class='main' id='mainDiv'>
+<table cellpadding='3'>
+<tr><td>
+	<h3>Team </h3><h4 id='team1Display'>Team 1</h4>
+	<h2 id='display1' class='display'>0</h2>
+</td><td>
+	<h3>Team </h3><h4 id='team2Display'>Team 2</h4>
+	<h2 id='display2' class='display'>0</h2>
+</td></tr>
+<tr><td>
+	<div class='z'></div>
+<section id='team1Twenty'>
+</section><section id='team1Fifty'>
+</section><section id='team1Hundred'>
+</section>
+</td><td>
+	<div class='z'></div>
+<section id='team2Twenty'>
+</section><section id='team2Fifty'>
+</section><section id='team2Hundred'>
+</section>
+</td></tr>
+<tr>
+	<td><h3 id='restTeam1' class='rest'></h3></td>
+	<td><h3 id='restTeam2' class='rest'></h3></td>
+</tr>
+<tr><td>
+	<div id='team1' class='team'>
+		<input id='gameTeam1' class='pointsInput' autocomplete='off' placeholder='Enter points!'></input><p>
+		<div id="buttonTeam1" class='buttonSubmit' onclick="gameEnd('team1')">Enter</div><p>
+		<span class="ErrorNumber" id="Error1">Please enter a valid number.</span>
+	</div>
+</td><td>
+	<div id='team2' class='team'>
+		<input id='gameTeam2' class='pointsInput' autocomplete='off' placeholder='Enter points!'></input><p>
+		<div id="buttonTeam2" class='buttonSubmit' onclick="gameEnd('team2')">Enter</div><p>
+		<span class="ErrorNumber" id="Error2">Please enter a valid number.</span>
+	</div>
+</td></tr>
+<tr>	
+<td><h3 id='weisenTeam1Heading' class='weisenHeader'>Weisen Team 1</h3></td>
+<td><h3 id='weisenTeam2Heading' class='weisenHeader'>Weisen Team 2</h3></td>
+</tr>
+<tr>
+<td>
+	<span class="weisen" onclick='weisenTeam1(20)'>20</span>
+	<span class="weisen" onclick='weisenTeam1(50)'>50</span>
+	<span class="weisen" onclick='weisenTeam1(100)'>100</span>
+	<span class="weisen" onclick='weisenTeam1(150)'>150</span>
+</td>
+<td>
+	<span class="weisen" onclick='weisenTeam2(20)'>20</span>
+	<span class="weisen" onclick='weisenTeam2(50)'>50</span>
+	<span class="weisen" onclick='weisenTeam2(100)'>100</span>
+	<span class="weisen" onclick='weisenTeam2(150)'>150</span>
+</td>
+</tr>
+<tr>
+<td>
+	<span class="weisen" onclick='weisenTeam1(200)'>200</span>
+	<span class="weisen" onclick='weisenTeam1(250)'>250</span>
+	<span class="weisen" onclick='weisenTeam1(300)'>300</span>
+</td>
+<td>
+	<span class="weisen" onclick='weisenTeam2(200)'>200</span>
+	<span class="weisen" onclick='weisenTeam2(250)'>250</span>
+	<span class="weisen" onclick='weisenTeam2(300)'>300</span>
+</td>
+</tr>
+</table>
+<div class='line'></div>
+	<span id='undo' class="button">Undo</span>
+	<span id='reset' class="button">New Game</span>
+	<span id='changeName' class="button">Change Names</span>
+	<span id='showLog' class="button">Show Log</span>
+	<span id='zStrokesHide' class="button">Toggle 'Z'</span>
+</div>
+<div class='main' id='log'><p>Nothing to display yet! Keep playing and check back later!</p></div>
+<div class='developer' >
+	<img src='fox.png' height="20"/>
+	<div>Created by <a href='mailto:mattifuchs@gmail.com?Subject=Jasstafel'>Matthias Fuchs</a>.
+</div>
+
+<script type='text/javascript'>
+var score1 = 0;
+var score2 = 0;
+var teamName1 = 0;
+var teamName2 = 0;
+var lastChangeTeam1 = [];
+var lastChangeTeam2 = [];
+var undoAction = -1;
+var strokeRestTeam1 = 0;
+var strokeRestTeam2 = 0;
+var gameNumber = 1;
+var roundNumber = 1;
+var logCount = 0;
+var zDisplay = 0;
+
+$(document).ready(function(){
+	$("#gameTeam1").keypress(function(ev){
+    	if (ev.keyCode == 13) {
+       		gameEnd('team1');
+    	}
+	});
+	$("#gameTeam2").keypress(function(ev){
+    	if (ev.keyCode == 13) {
+       		gameEnd('team2');
+    	}
+	});
+	$("#teamName1").keypress(function(ev){
+    	if (ev.keyCode == 13) {
+       		registerNames();
+    	}
+	});
+	$("#teamName2").keypress(function(ev){
+    	if (ev.keyCode == 13) {
+       		registerNames();
+    	}
+	});
+	$('#reset').click(function(){
+		score1=0;
+		score2=0;
+		strokeRestTeam1 = 0;
+		strokeRestTeam2 = 0;
+		$('#display1').html(score1);
+		$('#display2').html(score2);
+		zStrokes('team1',0,'undo');
+		writeLog(0,0,0,0,'reset');
+		undoAction = -1
+	});
+	$('#undo').click(function(){
+		if (undoAction<0) {
+			alert('There is nothing to undo!')
+		} else {
+			score1-=lastChangeTeam1[undoAction];
+			score2-=lastChangeTeam2[undoAction];
+			$('#display1').html(score1);
+			$('#display2').html(score2);
+			$('#Error1').html("Minus "+lastChangeTeam1[undoAction]+" points.")
+			$('#Error2').html("Minus "+lastChangeTeam2[undoAction]+" points.")
+			$('#Error1').toggleClass("Error");
+				setTimeout(function(){$('#Error1').toggleClass('Error')},2000);
+			$('#Error2').toggleClass("Error");
+				setTimeout(function(){$('#Error2').toggleClass('Error')},2000);
+			writeLog(teamName1, teamName2, lastChangeTeam1[undoAction], lastChangeTeam2[undoAction],'undo');
+			lastChangeTeam1.splice(undoAction,1)
+			lastChangeTeam2.splice(undoAction,1)
+			undoAction-=1;
+			zStrokes('team1',0,'undo');
+		};
+	});
+	$('#changeName').click(function(){
+		$('#nameSubmitDiv').show();
+	});
+	$('#showLog').click(function(){
+		$('#log').toggle();
+	});
+	$('#log').hide();
+	$('#zStrokesHide').click(function(){
+			if (zDisplay===1){
+			$('.z').empty();
+			$('.rest').empty();
+			$('#team1Twenty').empty();
+			$('#team2Twenty').empty();
+			$('#team1Fifty').empty();
+			$('#team2Fifty').empty();
+			$('#team1Hundred').empty();
+			$('#team2Hundred').empty();
+			$('.display').css('margin-bottom','10px')
+			$('.display').css('font-size','90px')
+			zDisplay = 0;
+		} else {
+			zDisplay = 1;
+			$('.z').html('Z');
+			zStrokes('team1',0,'undo');
+			$('.display').css('margin-bottom','-20px')
+			$('.display').css('font-size','75px')
+		};
+	});
+});
+
+function registerNames() {
+	if ($('#teamName1').val()==''||$('#teamName2').val()==""||$('#teamName1').val().length>15||$('#teamName2').val().length>15||$('#teamName1').val()==$('#teamName1').val().toUpperCase()||$('#teamName2').val()==$('#teamName2').val().toUpperCase()) {
+			$('#teamName1').css('background-color','rgba(127,38,38,0.5)');
+			setTimeout(function(){$('#teamName1').css('background-color','rgba(75,75,75,1)')},200);
+			$('#teamName2').css('background-color','rgba(127,38,38,0.5)');
+			setTimeout(function(){$('#teamName2').css('background-color','rgba(75,75,75,1)')},200);
+			$("#ErrorName").toggleClass("Error");
+			setTimeout(function(){$("#ErrorName").toggleClass('Error')},2000);
+	} else {
+			teamName1 = $('#teamName1').val();
+			teamName2 = $('#teamName2').val();
+			$('#team1Display').empty();
+			$('#team2Display').empty();
+			$('#team1Display').html('<h4>'+teamName1+'</h4>');
+			$('#team2Display').html('<h4>'+teamName2+'</h4>');
+			$('#weisenTeam1Heading').empty();
+			$('#weisenTeam2Heading').empty();
+			$('#weisenTeam1Heading').html('<h3  class="weisenHeader">Weisen '+teamName1+'</h3>');
+			$('#weisenTeam2Heading').html('<h3  class="weisenHeader">Weisen '+teamName2+'</h3>');
+			$('#nameSubmitDiv').fadeOut('slow');
+			setTimeout(function(){$('#mainDiv').css('visibility','visible')},1000);
+	}
+};
+
+function gameEnd(winningTeam) {
+	if (winningTeam==='team1') {
+		var teamDiv = $('#team1');
+		var teamInputField = $('#gameTeam1');
+		var errorMessage = $('#Error1');
+		var displayWinner = $('#display1');
+		var displayLoser = $('#display2');
+		var teamNameWinner = teamName1;
+		var teamNameLoser = teamName2;
+
+	} else if (winningTeam==="team2") {
+		var teamDiv = $('#team2');
+		var teamInputField = $('#gameTeam2');
+		var errorMessage = $('#Error2');
+		var displayWinner = $('#display2');
+		var displayLoser = $('#display1');
+		var teamNameWinner = teamName2;
+		var teamNameLoser = teamName1;
+
+	};
+	var input = parseFloat(teamInputField.val());
+
+	if (isNaN(input)||input===""||(input!=257&&input>157)) {
+		teamInputField.css('background-color','rgba(127,38,38,0.5)');
+			setTimeout(function(){teamInputField.css('background-color','rgba(75,75,75,1)')},200);	
+		errorMessage.html('Please enter a valid number.');
+		errorMessage.toggleClass("Error");
+			setTimeout(function(){errorMessage.toggleClass('ErrorNumber')},2000);
+   	} else {
+		if(winningTeam==='team1'){
+			if (input===257){
+				score1 += input;
+				displayWinner.html(score1);
+				$('#overlayTeam1').show();
+				$('#overlayTeam1').html("Congratulations to your Match, "+teamNameWinner+'!');
+				setTimeout(function(){$('#overlayTeam1').hide()},2500);
+				lastChangeTeam1.push(input);
+				lastChangeTeam2.push(0);
+				zStrokes('team1',257,'normal');
+				writeLog (teamName1, 0, input, 0, 'match');
+			} else {
+				score1 += input;
+				displayWinner.html(score1);
+				score2 += (157-input);
+				displayLoser.html(score2);
+				lastChangeTeam1.push(input);
+				lastChangeTeam2.push(157-input);
+				zStrokes('team1',input,'normal');
+				writeLog (teamName1, teamName2, input, (157-input), 'normal');
+			}};
+		undopress = 0;
+		if(winningTeam==='team2'){
+			if (input===257){
+				score2 += input;
+				displayWinner.html(score2);
+				$('#overlayTeam1').show();
+				$('#overlayTeam1').html("Congratulations to your Match, "+teamNameWinner+'!');
+				setTimeout(function(){$('#overlayTeam1').hide()},2500);
+				lastChangeTeam1.push(0);
+				lastChangeTeam2.push(input);
+				zStrokes('team2',257,'normal');
+				writeLog (teamName2, 0, input, 0, 'match');
+			} else {
+				score2 += input;
+				displayWinner.html(score2);
+				score1 += (157-input);
+				displayLoser.html(score1);
+				lastChangeTeam1.push(157-input);
+				lastChangeTeam2.push(input);
+				zStrokes ('team2',input,'normal')
+				writeLog (teamName1, teamName2, (157-input), input, 'normal');
+			}};
+		if (score1>1000) {
+			$('#overlayTeam1').show();
+			$('#overlayTeam1').html(teamName1+' wins!');
+			setTimeout(function(){$('#overlayTeam1').hide()},5000);
+			writeLog (teamName1,0,0,0,'win')
+		} else if (score2>1000){
+			$('#overlayTeam2').show();
+			$('#overlayTeam2').html(teamName2+' wins!');
+			setTimeout(function(){$('#overlayTeam2').hide()},5000);
+			writeLog (teamName2,0,0,0,'win')
+		};
+		undoAction+=1;
+		teamInputField.val('');
+	};
+};
+function weisenTeam1(points) {
+	score1 += points;
+	$('#display1').html(score1);
+	lastChangeTeam1.push(points);
+	lastChangeTeam2.push(0);
+	undoAction+=1;
+	zStrokes('team1',points,'weisen');
+	writeLog(teamName1,0,points,0,'weisen');
+};
+function weisenTeam2(points) {
+	score2 += points;
+	$('#display2').html(score2);
+	lastChangeTeam1.push(0);
+	lastChangeTeam2.push(points);
+	undoAction+=1;
+	zStrokes ('team2',points,'weisen');
+	writeLog(teamName2,0,points,0,'weisen');
+};
+function zStrokes (winningTeam, input, type) {
+	if (zDisplay === 1) {
+	var winnerEffectiveInput = 0
+	var loserEffectiveInput = 0
+	if (type == 'normal') {
+	if (input == 257) {
+		if (winningTeam=='team1') {
+			var winnerEffectiveInput = input + strokeRestTeam1;
+			var loserEffectiveInput = 0;
+		} else if (winningTeam=='team2')
+			var winnerEffectiveInput = input + strokeRestTeam2
+			var loserEffectiveInput = 0;
+	} else {
+	if (winningTeam=='team1') {
+		var winnerEffectiveInput = input + strokeRestTeam1;
+		var loserEffectiveInput = (157-input) + strokeRestTeam2;
+	} else if (winningTeam=='team2') {
+		var winnerEffectiveInput = input + strokeRestTeam2
+		var loserEffectiveInput = (157-input) + strokeRestTeam1;
+	}}} else if (type == 'weisen') {
+		var winnerEffectiveInput = input;
+		var loserEffectiveInput = 0;
+	} else if (type == 'undo') {
+		var winnerEffectiveInput = score1;
+		var loserEffectiveInput = score2;
+		$('#team1Hundred').empty();
+		$('#team1Fifty').empty();
+		$('#team1Twenty').empty();
+		$('#team2Hundred').empty();
+		$('#team2Fifty').empty();
+		$('#team2Twenty').empty();
+	};
+	var winnerHundreds = Math.floor(winnerEffectiveInput/100);
+	var winnerFifties = Math.floor((winnerEffectiveInput -(winnerHundreds*100))/50);
+	var winnerTwenties = Math.floor((winnerEffectiveInput -(winnerHundreds*100)-(winnerFifties*50))/20);
+	var strokeRestWinner = (winnerEffectiveInput-(winnerHundreds*100)-(winnerFifties*50)-(winnerTwenties*20));
+	//if (Math.abs(winnerEffectiveInput-((winnerHundreds*100)+(winnerFifties*50)+(winnerTwenties*20)))>Math.abs(winnerEffectiveInput-((winnerHundreds*100)+(winnerFifties*50)+((winnerTwenties+1)*20)))) {
+		//winnerTwenties+1;
+		//strokeRestWinner =-20;
+	//};
+	var loserHundreds = Math.floor(loserEffectiveInput/100);
+	var loserFifties = Math.floor((loserEffectiveInput -(loserHundreds*100))/50);
+	var loserTwenties = Math.floor((loserEffectiveInput -(loserHundreds*100)-(loserFifties*50))/20);
+	var strokeRestLoser = (loserEffectiveInput-(loserHundreds*100)-(loserFifties*50)-(loserTwenties*20));
+	//if (Math.abs(loserEffectiveInput-((loserHundreds*100)+(loserFifties*50)+(loserTwenties*20)))>Math.abs(loserEffectiveInput-((loserHundreds*100)+(loserFifties*50)+((loserTwenties+1)*20)))) {
+		//loserTwenties+1;
+		//strokeRestLoser=-20;
+	//};
+	if (winningTeam=='team1') {
+		for (var iWinnerHundred = 1; iWinnerHundred <= winnerHundreds; iWinnerHundred++) {
+			$('#team1Hundred').append("<div class='zHundred'>l</div>");
+		};
+		for (var iWinnerFifty = 1; iWinnerFifty <= winnerFifties; iWinnerFifty++) {
+			$('#team1Fifty').append("<div class='zFifty'>l</div>");
+		};
+		for (var iWinnerTwenty = 1; iWinnerTwenty <= winnerTwenties; iWinnerTwenty++) {
+			$('#team1Twenty').append("<div class='zTwenty'>l</div>");
+		};
+		for (var iLoserHundred = 1; iLoserHundred <= loserHundreds; iLoserHundred++) {
+			$('#team2Hundred').append("<div class='zHundred'>l</div>");
+		};
+		for (var iLoserFifty = 1; iLoserFifty <= loserFifties; iLoserFifty++) {
+			$('#team2Fifty').append("<div class='zFifty'>l</div>");
+		};
+		for (var iLoserTwenty = 1; iLoserTwenty <= loserTwenties; iLoserTwenty++) {
+			$('#team2Twenty').append("<div class='zTwenty'>l</div>");
+		};
+		$('#restTeam1').html(strokeRestWinner);
+		strokeRestTeam1 = strokeRestWinner;
+		$('#restTeam2').html(strokeRestLoser);
+		strokeRestTeam2 = strokeRestLoser;
+	} else if (winningTeam=='team2') {
+		for (var iWinnerHundred = 1; iWinnerHundred <= winnerHundreds; iWinnerHundred++) {
+			$('#team2Hundred').append("<div class='zHundred'>l</div>");
+		};
+		for (var iWinnerFifty = 1; iWinnerFifty <= winnerFifties; iWinnerFifty++) {
+			$('#team2Fifty').append("<div class='zFifty'>l</div>");
+		};
+		for (var iWinnerTwenty = 1; iWinnerTwenty <= winnerTwenties; iWinnerTwenty++) {
+			$('#team2Twenty').append("<div class='zTwenty'>l</div>");
+		};
+		for (var iLoserHundred = 1; iLoserHundred <= loserHundreds; iLoserHundred++) {
+			$('#team1Hundred').append("<div class='zHundred'>l</div>");
+		};
+		for (var iLoserFifty = 1; iLoserFifty <= loserFifties; iLoserFifty++) {
+			$('#team1Fifty').append("<div class='zFifty'>l</div>");
+		};
+		for (var iLoserTwenty = 1; iLoserTwenty <= loserTwenties; iLoserTwenty++) {
+			$('#team1Twenty').append("<div class='zTwenty'>l</div>");
+		};
+		$('#restTeam2').html(strokeRestWinner);
+		strokeRestTeam2 = strokeRestWinner;
+		$('#restTeam1').html(strokeRestLoser);
+		strokeRestTeam1 = strokeRestLoser;
+	}};
+};
+function writeLog (logTeam1, logTeam2, logPointsTeam1, logPointsTeam2, type) {
+	if (logCount<1) {
+		$("#log").empty();
+	}
+	if (type == 'normal') {
+		$('#log').append('<p>Game '+gameNumber+', End of round '+roundNumber+': '+logTeam1+' score '+logPointsTeam1+' points and '+logTeam2+' score '+logPointsTeam2+' points.</p>');
+		roundNumber +=1;
+		logCount++;
+	} else if (type == 'match') {
+		$('#log').append('<p>Game '+gameNumber+', End of round '+roundNumber+': '+logTeam1+' score a match!</p>');
+		roundNumber +=1;
+		logCount++;
+	} else if (type == 'weisen') {
+		$('#log').append('<p>Game '+gameNumber+', Round '+roundNumber+': '+logTeam1+' weis '+logPointsTeam1+' points.</p>');
+		logCount++;
+	} else if (type == 'undo') {
+		$('#log').append('<p>Game '+gameNumber+', Round '+roundNumber+', Action undone: '+logTeam1+"'s score is reduced by "+logPointsTeam1+' points and '+logTeam2+"'s score is reduced by "+logPointsTeam2+' points.</p>');
+		logCount++;
+	} else if (type == 'reset') {
+		gameNumber +=1;
+		roundNumber = 1;
+		$('#log').append('<p>Game reset. Game '+gameNumber+' starts.</p>');
+		logCount++;
+	} else if (type == 'win') {
+		$('#log').append('<p>End of game '+gameNumber+', End of round '+roundNumber+': '+logTeam1+' wins!</p>');
+		logCount++;
+	} else {alert('error')}
+};
+</script>
+</body>
